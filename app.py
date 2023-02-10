@@ -4,6 +4,10 @@ from flask import Flask, request
 app = Flask(__name__)
 
 dictionary_add = dict()
+dictionary_sub = dict()
+dictionary_mul = dict()
+dictionary_div = dict()
+
 @app.route('/add/<int:value1>/<int:value2>', methods=['POST'])
 def add(value1, value2):
     
@@ -14,14 +18,51 @@ def add(value1, value2):
         ret = "The result of the addition is " + str(result_add) + " ; id resultat = " + str(id_add) + "\n" 
     return ret
 
+@app.route('/sub/<int:value1>/<int:value2>', methods=['POST'])
+def sub(value1, value2):
+    
+    result_sub = int(value1) - int(value2)
+    if request.method == 'POST':
+        dictionary_sub[len(dictionary_sub)] = result_sub
+        id_sub = len(dictionary_sub)
+        ret = "The result of the addition is " + str(result_sub) + " ; id resultat = " + str(id_sub) + "\n" 
+    return ret
 
-@app.route("/", methods=['GET', 'POST'])
-def hello_world():
+@app.route('/mul/<int:value1>/<int:value2>', methods=['POST'])
+def mul(value1, value2):
+    
+    result_mul = int(value1) * int(value2)
+    if request.method == 'POST':
+        dictionary_mul[len(dictionary_mul)] = result_mul
+        id_mul = len(dictionary_mul)
+        ret = "The result of the addition is " + str(result_mul) + " ; id resultat = " + str(id_mul) + "\n" 
+    return ret
+
+@app.route('/div/<int:value1>/<int:value2>', methods=['POST'])
+def div(value1, value2):
+    
+    result_div = int(value1) / int(value2)
+    if request.method == 'POST':
+        dictionary_div[len(dictionary_div)] = result_div
+        id_div = len(dictionary_div)
+        ret = "The result of the addition is " + str(result_div) + " ; id resultat = " + str(id_div) + "\n" 
+    return ret
+
+
+
+"""
+@app.route("/sub", methods=['POST'])
+def sub():
     if request.method == 'POST':
 		# values is a combinaison of form and args data
-        value1 = int(request.form.get("key"))
-        ret = ret + " \n You send " + value1 + " under 'key' key :)" 
+        value1 = int(request.values.get('value1'))
+        value2 = int(request.values.get('value2'))
+        result_sub = value1 - value2
+        dictionary_sub[len(dictionary_sub)] = result_sub
+        id_sub = len(dictionary_sub)
+        ret =  "The result of the substraction is " + str(result_sub) + " ; id resultat = " + str(id_sub) + "\n" 
     return ret
+"""
 
 if __name__ == '__main__':
     if len(sys.argv) > 1:
