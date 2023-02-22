@@ -5,6 +5,7 @@ from flask import Flask, request
 app = Flask(__name__)
 r = redis.Redis(host='localhost', port=6379, db=0)
 
+
 @app.route('/add/<int:value1>/<int:value2>', methods=['POST'])
 def add(value1, value2):  
     result_add = int(value1) + int(value2)
