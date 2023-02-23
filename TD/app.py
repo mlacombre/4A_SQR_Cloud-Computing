@@ -15,6 +15,7 @@ def add(value1, value2):
         ret = "The result of the addition is " + str(result_add) + " ; id resultat = " + str(key) + "\n" 
     return ret
 
+
 @app.route('/get_my_calcul/<int:id>', methods=['GET'])
 def get_add(id):
     if request.method == 'GET':
@@ -75,3 +76,4 @@ if __name__ == '__main__':
             print("Passed argument not supported ! Supported argument : check_syntax")
             exit(1)
     app.run(debug=True)
+
