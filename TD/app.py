@@ -30,7 +30,7 @@ def sub(value1, value2):
     if request.method == 'POST':
         key = r.dbsize()
         r.set(key,result_sub)
-        ret = "The result of the addition is " + str(result_sub) + " ; id resultat = " + str(key) + "\n" 
+        ret = "The result of the addition is " +str(result_sub)+" ; id resultat = " + str(key) + "\n" 
     return ret
 
 
