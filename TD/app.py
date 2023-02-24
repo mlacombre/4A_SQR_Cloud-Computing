@@ -1,10 +1,12 @@
 import sys
 import redis
 from flask import Flask, request
+from flask_cors import CORS
 
 app = Flask(__name__)
 r = redis.Redis(host='localhost', port=6379, db=0)
 
+CORS(app)
 
 @app.route('/add/<int:value1>/<int:value2>', methods=['POST'])
 def add(value1, value2):  
@@ -12,7 +14,7 @@ def add(value1, value2):
     if request.method == 'POST':
         key = r.dbsize()
         r.set(key,result_add)
-        ret = "The result of the addition is " + str(result_add) + " ; id resultat = " + str(key) + "\n" 
+        ret = { "text": "The result of the addition is " + str(result_add) + " ; id resultat = " + str(key) + "\n" }
     return ret
 
 

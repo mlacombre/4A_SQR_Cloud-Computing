@@ -9,13 +9,16 @@ document.getElementById("calculation-form").addEventListener("submit", function(
     };
     
     fetch(`http://127.0.0.1:5000/${operator}/${number1}/${number2}`, option)
-      .then(response => response.json())
-      .then(data => {
-        console.log(response.json());
-        const calculationId = data.id;
-        document.getElementById("result").innerHTML = 5;
-      });
+      .then(response=>response.json())
+      .then(data=>{ console.log(data); })
   });
+
+  /*
+}).then(function(oui){
+  console.log(oui.body);
+  const calculationId = oui.data.id;
+  document.getElementById("result").innerHTML = 5;
+})*/
 
 document.getElementById("get-calcul").addEventListener("submit", function(e) {
     e.preventDefault();
