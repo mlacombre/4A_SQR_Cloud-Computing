@@ -1,4 +1,4 @@
-name: Example of Action workflow
+name: build python API
 
 on:
   workflow_dispatch:
@@ -8,5 +8,9 @@ jobs:
     runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@v3
-    - name: Weather
-      run: curl http://wttr.in/paris
+    - name: Setup Python
+      uses: actions/setup-python@v4.5.0
+    - name: install dependencies
+      run: python -m pip install --upgrade pip
+           pip install flask
+
