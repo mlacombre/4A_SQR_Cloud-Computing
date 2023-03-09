@@ -10,26 +10,13 @@ rUsername = redis.Redis(host='localhost', port=6379, db=1)
 @app.route('/flipByTime/<author>/<flip>', methods=['POST']) #vérifier quel méthode utiliser
 def flipByTime(flip,author):  
     if request.method == 'POST':
-        key = datetime.now()
-        rTimeStamps.lpush( key, "author: " +  author + "flip: " + flip)
-    return 0
-
-@app.route('/flipByName/<author>/<flip>', methods=['POST']) #vérifier quel méthode utiliser
-def flipByName(author):  
-    if request.method == 'POST':
-        key = author
+        key = str(datetime.now())
+        rUsername.lpush( key, "author: " +  author + "flip: " + flip)
         timeStamp = rUsername.lrange(key,0,-1)
-        timeStamp += datetime.now()
-        rTimeStamps.lpush(key, timeStamp)
+        timeStamp += ", " + key
+        rTimeStamps.lpush(author, timeStamp)
     return 0
     
-
-
-
-
-
-
-
 
 if __name__ == '__main__':
     if len(sys.argv) > 1:
