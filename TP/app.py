@@ -3,15 +3,22 @@ import redis
 from flask import Flask, request
 
 app = Flask(__name__)
-r = redis.Redis(host='localhost', port=6379, db=0)
+r = redis.Redis(host='localhost', port=6379, db=0) #save flip
 
-@app.route('/flip/<flip>', methods=['POST']) #vérifier quel méthode utiliser
+@app.route('/flip/<flip>', methods=['POST','GET']) #vérifier quel méthode utiliser
 def flipper(flip):  
     if request.method == 'POST':
         key = r.dbsize()
         r.set(key,flip)
-        ret = "your new flip is " + flip + "\n"
+        ret = {"flip" :"your new flip is " + flip}
     return ret
+
+
+
+
+
+
+
 
 if __name__ == '__main__':
     if len(sys.argv) > 1:
