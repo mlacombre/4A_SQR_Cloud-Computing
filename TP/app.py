@@ -1,17 +1,28 @@
 import sys
 import redis
 from flask import Flask, request
+from datetime import datetime
 
 app = Flask(__name__)
-r = redis.Redis(host='localhost', port=6379, db=0) #save flip
+rTimeStamps = redis.Redis(host='localhost', port=6379, db=0)
+rUsername = redis.Redis(host='localhost', port=6379, db=1)
 
-@app.route('/flip/<flip>', methods=['POST','GET']) #vérifier quel méthode utiliser
-def flipper(flip):  
+@app.route('/flipByTime/<author>/<flip>', methods=['POST']) #vérifier quel méthode utiliser
+def flipByTime(flip,author):  
     if request.method == 'POST':
-        key = r.dbsize()
-        r.set(key,flip)
-        ret = {"flip" :"your new flip is " + flip}
-    return ret
+        key = datetime.now()
+        rTimeStamps.lpush( key, "author: " +  author + "flip: " + flip)
+    return 0
+
+@app.route('/flipByName/<author>/<flip>', methods=['POST']) #vérifier quel méthode utiliser
+def flipByName(author):  
+    if request.method == 'POST':
+        key = author
+        timeStamp = rUsername.lrange(key,0,-1)
+        timeStamp += datetime.now()
+        rTimeStamps.lpush(key, timeStamp)
+    return 0
+    
 
 
 
