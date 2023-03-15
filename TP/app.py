@@ -43,6 +43,27 @@ def get_flip_by_user(author):
             flip_by_user.append(flip)
     return json.dumps(flip_by_user) #renvoie le tableau avec les users
 
+@app.route('/getAllSubject', methods=['GET','POST'])
+def get_subject():
+    """récupère l'ensemble des sujets"""
+    if request.method == 'POST' or request.method == 'GET':
+        pattern = r"flip: (\w+)" #regex du flip
+        pattern2 = r"# (w+)" #regex du sujet
+        sujets = []
+        for key in rUsername.scan_iter("*"):
+            flip = rUsername.lrange(key,0,-1) #tout les flips
+            flip = [x.decode() for x in flip] #décode 
+            match = re.search(pattern, str(flip))# application regex 1
+            flip = match.group(1) #récupère le flip
+            match2 = re.search(pattern2, flip) #application regex 2
+            sujet = match2.group(1)
+            if sujet:
+                sujets.append(sujet)
+    return json.dumps(sujets)
+    
+
+
+
 
 if __name__ == '__main__':
     if len(sys.argv) > 1:
