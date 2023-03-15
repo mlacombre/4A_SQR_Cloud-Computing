@@ -10,5 +10,5 @@ a copy of twitter but with a pink dolphin this time
 
 ## Authors
 
-- [@gabinde](https://github.com/gabinde)
-- [@mlacombre](https://github.com/mlacombre)
+- [@gabinde](https://github.com/gabinde) gabin Deroues
+- [@mlacombre](https://github.com/mlacombre) morgane Lacombre
