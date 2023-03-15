@@ -5,7 +5,7 @@
 
 # FLIPPER
 
-a copy of twitter but with a dolphin this time
+a copy of twitter but with a pink dolphin this time
 
 
 ## Authors
