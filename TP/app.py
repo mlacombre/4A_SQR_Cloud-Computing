@@ -34,7 +34,7 @@ def get_flip_by_user(author):
     if request.method == 'POST' or request.method == 'GET':
         timestamps = rTimestamps.lrange(author,0,-1) #récupère l'ensemle des timestamps des flips d'une personne
         flip_by_user = []
-        pattern = r"flip: (\w+)" #regex pour extraire les flips
+        pattern = r"author:.*?flip:\s*(.*)$" #regex pour extraire les flips
         for timestamp in timestamps: 
             flip = rUsername.lrange(timestamp,0,-1) #récupération du flip
             flip = [x.decode() for x in flip]
