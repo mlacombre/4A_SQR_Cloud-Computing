@@ -61,8 +61,6 @@ def get_subject():
                 sujets.append(sujet)
     return json.dumps(sujets)
     
->>>>>>> 4417f048e00963c74e002745d69d9b0f82a741d0
-
 
 
 
