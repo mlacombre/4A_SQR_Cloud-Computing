@@ -2,19 +2,23 @@ import sys
 import redis
 from flask import Flask, request
 from flask_cors import CORS
-
+id_cpt = 0
 app = Flask(__name__)
 r = redis.Redis(host='localhost', port=6379, db=0)
+
 
 CORS(app)
 
 @app.route('/add/<int:value1>/<int:value2>', methods=['POST'])
 def add(value1, value2):  
     result_add = int(value1) + int(value2)
-    if request.method == 'POST':
-        key = r.dbsize()
-        r.set(key,result_add)
-        ret = { "text": "The result of the addition is " + str(result_add) + " ; id resultat = " + str(key) + "\n" }
+    if request.method == 'POST':  
+        if r.get(id_cpt):
+            id_cpt = r.get(id_cpt)
+        r.set(id_cpt,result_add)
+        ret = { "text": "The result of the addition is " + str(result_add) + " ; id resultat = " + str(id_cpt) + "\n" }
+        id_cpt +=1
+        r.set(id_cpt, id_cpt)
     return ret
 
 
@@ -27,12 +31,15 @@ def get_add(id):
 
 
 @app.route('/sub/<int:value1>/<int:value2>', methods=['POST'])
-def sub(value1, value2):   
+def sub(value1, value2):
     result_sub = int(value1) - int(value2)
     if request.method == 'POST':
-        key = r.dbsize()
-        r.set(key,result_sub)
-        ret = "The result of the addition is " +str(result_sub)+" ; id resultat = " + str(key) + "\n" 
+        if r.get(id_cpt):
+            id_cpt = r.get(id_cpt)
+        r.set(id_cpt,result_sub)
+        id_cpt += 1
+        r.set(id_cpt,id_cpt)
+        ret = "The result of the addition is " +str(result_sub)+" ; id resultat = " + str(id_cpt) + "\n" 
     return ret
 
 
@@ -40,17 +47,23 @@ def sub(value1, value2):
 def mul(value1, value2):   
     result_mul = int(value1) * int(value2)
     if request.method == 'POST':
-        key = r.dbsize()
-        r.set(key,result_mul)
-        ret = "The result of the addition is " + str(result_mul) + " ; id resultat = " + str(key) + "\n" 
+        if r.get(id_cpt):
+            id_cpt = r.get(id_cpt)
+        r.set(id_cpt,result_mul)
+        id_cpt +=1
+        r.set(id_cpt,id_cpt)
+        ret = "The result of the addition is " + str(result_mul) + " ; id resultat = " + str(id_cpt) + "\n" 
     return ret
 
 @app.route('/div/<int:value1>/<int:value2>', methods=['POST'])
 def div(value1, value2):
     result_div = int(value1) / int(value2)
     if request.method == 'POST':
+        if r.get(id_cpt):
+            id_cpt = r.get(id_cpt)
         key = r.dbsize()
         r.set(key,result_div)
+        r.set(id_cpt,id_cpt)
         ret = "The result of the addition is " + str(result_div) + " ; id resultat = " + str(key) + "\n" 
     return ret
 
