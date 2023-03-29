@@ -17,9 +17,10 @@ def flip_by_time(author,flip):
         timestamp = str(datetime.now())
         content = {
             "flip" : flip,
-            "author" : author
+            "author" : author,
+            "Reflip" : False
         }
-        rUsername.hmset( timestamp, content)
+        rUsername.set( timestamp, json.dumps(content))
         rTimestamps.lpush(author, timestamp)
     return 'hello \n'
 
@@ -29,8 +30,8 @@ def get_flip():
     if request.method == 'POST' or request.method == 'GET':
         flips = []
         for key in rUsername.scan_iter("*"):
-            flip = rUsername.lrange(key,0,-1)
-            flips.append(str(flip))
+            flip = json.loads(rUsername.get(key))
+            flips.append(flip["flip"])
     return flips
 
 @app.route('/getFlipByUser/<author>', methods=['GET','POST'])
