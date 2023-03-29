@@ -6,15 +6,20 @@ import redis
 from flask import Flask, request
 
 app = Flask(__name__)
-rTimestamps = redis.Redis(host='localhost', port=6379, db=0)
-rUsername = redis.Redis(host='localhost', port=6379, db=1)
 
-@app.route('/flip/<author>/<flip>', methods=['GET','POST'])
+rTimestamps = redis.Redis(host='localhost', port=6379, db=0, decode_responses=True)
+rUsername = redis.Redis(host='localhost', port=6379, db=1,decode_responses=True)
+
+@app.route('/flip/<author>/<flip>', methods=['POST'])
 def flip_by_time(author,flip):
     """enregiste les flips par auteurs et timestamp"""
-    if request.method == 'POST' or request.method == 'GET':
+    if request.method == 'POST':
         timestamp = str(datetime.now())
-        rUsername.lpush( timestamp, "author: " +  author + " flip: " + flip)
+        content = {
+            "flip" : flip,
+            "author" : author
+        }
+        rUsername.hmset( timestamp, content)
         rTimestamps.lpush(author, timestamp)
     return 'hello \n'
 
