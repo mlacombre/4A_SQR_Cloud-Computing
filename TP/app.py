@@ -34,7 +34,7 @@ def get_flip_by_user(author):
     if request.method == 'POST' or request.method == 'GET':
         timestamps = rTimestamps.lrange(author,0,-1) #récupère l'ensemle des timestamps des flips d'une personne
         flip_by_user = []
-        pattern = r"flip: (\w+)" #regex pour extraire les flips
+        pattern = r"author:.*?flip:\s*(.*)$" #regex pour extraire les flips
         for timestamp in timestamps: 
             flip = rUsername.lrange(timestamp,0,-1) #récupération du flip
             flip = [x.decode() for x in flip]
@@ -47,14 +47,17 @@ def get_flip_by_user(author):
 def get_subject():
     """récupère l'ensemble des sujets"""
     if request.method == 'POST' or request.method == 'GET':
-        pattern = r"flip: (\w+)" #regex du flip
-        pattern2 = r"\#\w+" #regex du sujet
-        
+        pattern = r"author:.*?flip:\s*(.*)$" #regex du flip
+        pattern2 = r"(?<!\w)#[A-Za-z0-9]+(?![A-Za-z0-9]*#)" #regex du sujet
+        sujets = []
         for key in rUsername.scan_iter("*"):
             flip = rUsername.lrange(key,0,-1) #tout les flips
             flip = [x.decode() for x in flip] #décode 
             match = re.search(pattern, str(flip))# application regex 1
-            sujets = re.findall(pattern2, str(match))            
+            flip = match.group(1) #récupère le flip
+            match2 = re.findall(pattern2, flip) #application regex 2
+            if match2:
+                sujets.extend(match2)
     return json.dumps(sujets)
 
 if __name__ == '__main__':

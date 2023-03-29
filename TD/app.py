@@ -68,19 +68,6 @@ def div(value1, value2):
     return ret
 
 
-"""
-@app.route("/sub", methods=['POST'])
-def sub():
-    if request.method == 'POST':
-		# values is a combinaison of form and args data
-        value1 = int(request.form.get('value1'))
-        value2 = int(request.form.get('value2'))
-        result_sub = value1 - value2
-        dictionary_sub[len(dictionary_sub)] = result_sub
-        id_sub = len(dictionary_sub)
-        ret =  "The result of the substraction is " + str(result_sub) + " ; id resultat = " + str(id_sub) + "\n" 
-    return ret
-"""
 
 if __name__ == '__main__':
     if len(sys.argv) > 1:
