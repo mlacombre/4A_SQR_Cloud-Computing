@@ -48,22 +48,14 @@ def get_subject():
     """récupère l'ensemble des sujets"""
     if request.method == 'POST' or request.method == 'GET':
         pattern = r"flip: (\w+)" #regex du flip
-        pattern2 = r"# (w+)" #regex du sujet
-        sujets = []
+        pattern2 = r"\#\w+" #regex du sujet
+        
         for key in rUsername.scan_iter("*"):
             flip = rUsername.lrange(key,0,-1) #tout les flips
             flip = [x.decode() for x in flip] #décode 
             match = re.search(pattern, str(flip))# application regex 1
-            flip = match.group(1) #récupère le flip
-            match2 = re.search(pattern2, flip) #application regex 2
-            sujet = match2.group(1)
-            if sujet:
-                sujets.append(sujet)
+            sujets = re.findall(pattern2, str(match))            
     return json.dumps(sujets)
-    
-
-
-
 
 if __name__ == '__main__':
     if len(sys.argv) > 1:
@@ -74,3 +66,5 @@ if __name__ == '__main__':
             print("Passed argument not supported ! Supported argument : check_syntax")
             exit(1)
     app.run(debug=True)
+
+
