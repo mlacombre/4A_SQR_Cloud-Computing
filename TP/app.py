@@ -24,14 +24,14 @@ def flip_by_time(author,flip):
         rTimestamps.lpush(author, timestamp)
     return 'hello \n'
 
-@app.route('/getAllFlip', methods=['GET','POST'])
+@app.route('/getAllFlip', methods=['GET'])
 def get_flip():
     """récupère l'ensemble des flips"""
-    if request.method == 'POST' or request.method == 'GET':
+    if request.method == 'GET':
         flips = []
         for key in rUsername.scan_iter("*"):
             flip = json.loads(rUsername.get(key))
-            flips.append(flip["flip"])
+            flips.append(flip)
     return flips
 
 @app.route('/getFlipByUser/<author>', methods=['GET','POST'])
@@ -40,12 +40,8 @@ def get_flip_by_user(author):
     if request.method == 'POST' or request.method == 'GET':
         timestamps = rTimestamps.lrange(author,0,-1) #récupère l'ensemle des timestamps des flips d'une personne
         flip_by_user = []
-        pattern = r"author:.*?flip:\s*(.*)$" #regex pour extraire les flips
         for timestamp in timestamps: 
-            flip = rUsername.lrange(timestamp,0,-1) #récupération du flip
-            flip = [x.decode() for x in flip]
-            match = re.search(pattern, str(flip))# application regex
-            flip = match.group(1) #récupère la partie recherché
+            flip = json.loads(rUsername.get(timestamp))
             flip_by_user.append(flip)
     return json.dumps(flip_by_user) #renvoie le tableau avec les users
 
