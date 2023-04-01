@@ -17,12 +17,16 @@ def flip_by_time(author,flip):
         timestamp = str(datetime.now())
         content = {
             "flip" : flip,
-            "author" : author,
-            "Reflip" : False
+            "author" : author
         }
-        rUsername.set( timestamp, json.dumps(content))
-        rTimestamps.lpush(author, timestamp)
-    return 'hello \n'
+        rUsername.set(timestamp, json.dumps(content))
+        rTimestamps.lpush( "u-"+author, timestamp)
+        patternhashtag = r"(?<!\w)#[A-Za-z0-9]+(?![A-Za-z0-9]*#)" #regex du sujet
+        sujets = re.findall(patternhashtag, flip) #application regex 2
+        if sujets:
+            for sujet in sujets:
+                rTimestamps.lpush("h-"+ sujet, timestamp)
+    return 'ca marche \n'
 
 @app.route('/getAllFlip', methods=['GET'])
 def get_flip():
@@ -32,35 +36,41 @@ def get_flip():
         for key in rUsername.scan_iter("*"):
             flip = json.loads(rUsername.get(key))
             flips.append(flip)
-    return flips
+    return flips #ca marche
 
-@app.route('/getFlipByUser/<author>', methods=['GET','POST'])
+@app.route('/getFlipByUser/<author>', methods=['GET'])
 def get_flip_by_user(author):
     """récupère l'ensemble des flips provennant d'un utilisateur"""
-    if request.method == 'POST' or request.method == 'GET':
-        timestamps = rTimestamps.lrange(author,0,-1) #récupère l'ensemle des timestamps des flips d'une personne
+    if request.method == 'GET':
+        timestamps = rTimestamps.lrange("u-" + author,0,-1) #récupère l'ensemle des timestamps des flips d'une personne
         flip_by_user = []
-        for timestamp in timestamps: 
+        for timestamp in timestamps:
             flip = json.loads(rUsername.get(timestamp))
             flip_by_user.append(flip)
-    return json.dumps(flip_by_user) #renvoie le tableau avec les users
+    return json.dumps(flip_by_user) #renvoie le tableau avec les flip d'un user
 
-@app.route('/getAllSubject', methods=['GET','POST'])
+@app.route('/getAllSubject', methods=['GET'])
 def get_subject():
     """récupère l'ensemble des sujets"""
-    if request.method == 'POST' or request.method == 'GET':
-        pattern = r"author:.*?flip:\s*(.*)$" #regex du flip
-        pattern2 = r"(?<!\w)#[A-Za-z0-9]+(?![A-Za-z0-9]*#)" #regex du sujet
+    if request.method == 'GET':
+        keys = rTimestamps.keys('h-*')
         sujets = []
-        for key in rUsername.scan_iter("*"):
-            flip = rUsername.lrange(key,0,-1) #tout les flips
-            flip = [x.decode() for x in flip] #décode 
-            match = re.search(pattern, str(flip))# application regex 1
-            flip = match.group(1) #récupère le flip
-            match2 = re.findall(pattern2, flip) #application regex 2
-            if match2:
-                sujets.extend(match2)
+        for key in keys:
+            sujets.append(key[2:])
     return json.dumps(sujets)
+
+@app.route('/getFlipByHashtag/<sujet>', methods=['GET'])
+def get_flip_by_subject(sujet):
+    """récupère tous les flips qui correspondent à un sujet"""
+    if request.method == 'GET':
+        timestamps = rTimestamps.lrange("h-" + sujet,0,-1) #récupère l'ensemle des timestamps des flips d'une personne
+        flip_by_hashtag = []
+        for timestamp in timestamps:
+            flip = json.loads(rUsername.get(timestamp))
+            flip_by_hashtag.append(flip)
+    return json.dumps(flip_by_hashtag) #renvoie le tableau avec les flip d'un sujet
+
+
 
 if __name__ == '__main__':
     if len(sys.argv) > 1:
