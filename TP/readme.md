@@ -50,7 +50,7 @@ cette API dispose de 6 routes :
 
 #### Flip
 
-```http
+```bash
   POST /flip/<author>/<flip>
 ```
 
@@ -100,19 +100,5 @@ celle ci permet de récupérer l'ensemble des flips ou apparait un sujet.
   POST /Reflip/<flipper>/<reflipper>/<reflipped>
 ````
 
-Cette route permet de stocker en base de donnée un nouveau tweet équivalent à celui tweeté cependant rajoute une donnée reflipper dans le tweet permettant de savoir que le tweet est un retweet et qui la retweet.
+Cette route permet de stocker en base de donnée un nouveau tweet équivalent à celui tweeté cependant rajoute une donnée reflipper dans le tweet permettant de savoir que le tweet est un retweet et qui la retweet
 ##### Attention ⚠️, il est possible de reflipper plusieurs fois un même flip avec cette méthode. Aucun mécanisme n'a été rajouté pour l'empécher.
-
-
-
-
-
-
-
-
-
-
-
-
-
-
