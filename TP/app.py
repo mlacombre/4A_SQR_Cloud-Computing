@@ -74,23 +74,20 @@ def get_flip_by_subject(sujet):
 def reflip(flipper,reflipper,reflipped):
     """une route qui permet de préciser un reflip et qui à reflip"""
     if request.method == 'POST':
-        timestamps = rTimestamps.lrange("u-" + flipper,0,-1) #récupère l'ensemle des timestamps des flips de l'auteur original
-        for timestamp in timestamps:
-            if json.loads(rUsername.get(timestamp))["flip"] == reflipped :
-                content = {
-                    "flip" : reflipped,
-                    "author" : flipper,
-                    "refliper": reflipper
-                }
-                timestamp = str(datetime.now())
-                rUsername.set(timestamp, json.dumps(content))
-                rTimestamps.lpush( "u-"+ reflipper, timestamp)
-                patternhashtag = r"(?<!\w)#[A-Za-z0-9]+(?![A-Za-z0-9]*#)" #regex du sujet
-                sujets = re.findall(patternhashtag, reflipped) #application regex 2
-                if sujets:
-                    for sujet in sujets:
-                        rTimestamps.lpush("h-"+ sujet, timestamp)
-                return 'hello \n'
+        content = {
+            "flip" : reflipped,
+            "author" : flipper,
+            "refliper": reflipper
+        }
+        timestamp = str(datetime.now())
+        rUsername.set(timestamp, json.dumps(content))
+        rTimestamps.lpush( "u-"+ reflipper, timestamp)
+        patternhashtag = r"(?<!\w)#[A-Za-z0-9]+(?![A-Za-z0-9]*#)" #regex du sujet
+        sujets = re.findall(patternhashtag, reflipped) #application regex 2
+        if sujets:
+            for sujet in sujets:
+                rTimestamps.lpush("h-"+ sujet, timestamp)
+    return 'hello \n'
 
 
 if __name__ == '__main__':
