@@ -64,7 +64,7 @@ Elle permet aussi de stocker lmes sujets grâce à l'expression régulière :
 
 #### Récupération de l'ensemble des Flips
 
-```http
+```bash
   GET /getAllFlip
 ```
 
@@ -72,7 +72,7 @@ Cette route permet de récupérer l'ensemble des flips qui ont été écrits.
 
 #### Récupération de l'ensemble des Flips d'un utilisateur
 
-```http
+```bash
   GET /getFlipByUser/<User>
 ```
 
@@ -80,7 +80,7 @@ Cette route permet de récupérer l'ensemble des flips qu'un utilisateur à écr
 
 #### Récupération de l'ensemble des sujets
 
-```http
+```bash
   GET /getAllSubject
 ```
 Cette route récupère l'ensemble des sujets stocké dans la base reddis. 
@@ -88,7 +88,7 @@ Cette route récupère l'ensemble des sujets stocké dans la base reddis.
 
 #### Récupération de l'ensemble des flips ou apparait un sujet
 
-```http
+```bash
   GET /getFlipByHashtag/<sujet>
 ````
 
@@ -96,7 +96,7 @@ celle ci permet de récupérer l'ensemble des flips ou apparait un sujet.
 
 #### Reflip
 
-```http
+```bash
   POST /Reflip/<flipper>/<reflipper>/<reflipped>
 ````
 
