@@ -17,7 +17,7 @@ def flip_by_time(author,flip):
         timestamp = str(datetime.now())
         content = {
             "flip" : flip,
-            "author" : author
+            "author" : author,
         }
         rUsername.set(timestamp, json.dumps(content))
         rTimestamps.lpush( "u-"+author, timestamp)
@@ -70,6 +70,27 @@ def get_flip_by_subject(sujet):
             flip_by_hashtag.append(flip)
     return json.dumps(flip_by_hashtag) #renvoie le tableau avec les flip d'un sujet
 
+@app.route('/Reflip/<flipper>/<reflipper>/<reflipped>', methods=['POST'])
+def reflip(flipper,reflipper,reflipped):
+    """une route qui permet de préciser un reflip et qui à reflip"""
+    if request.method == 'POST':
+        timestamps = rTimestamps.lrange("u-" + flipper,0,-1) #récupère l'ensemle des timestamps des flips de l'auteur original
+        for timestamp in timestamps:
+            if json.loads(rUsername.get(timestamp))["flip"] == reflipped :
+                content = {
+                    "flip" : reflipped,
+                    "author" : flipper,
+                    "refliper": reflipper
+                }
+                timestamp = str(datetime.now())
+                rUsername.set(timestamp, json.dumps(content))
+                rTimestamps.lpush( "u-"+ reflipper, timestamp)
+                patternhashtag = r"(?<!\w)#[A-Za-z0-9]+(?![A-Za-z0-9]*#)" #regex du sujet
+                sujets = re.findall(patternhashtag, reflipped) #application regex 2
+                if sujets:
+                    for sujet in sujets:
+                        rTimestamps.lpush("h-"+ sujet, timestamp)
+                return 'hello \n'
 
 
 if __name__ == '__main__':
@@ -81,5 +102,3 @@ if __name__ == '__main__':
             print("Passed argument not supported ! Supported argument : check_syntax")
             exit(1)
     app.run(debug=True)
-
-
