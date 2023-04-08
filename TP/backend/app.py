@@ -29,7 +29,9 @@ def flip_by_time(author,flip):
         if sujets:
             for sujet in sujets:
                 rTimestamps.lpush("h-"+ sujet, timestamp)
-    return 'ca marche \n'
+    response = jsonify({"message": "Flip ajouté avec succès"})
+    response.headers.add("Access-Control-Allow-Origin", "*")
+    return response
 
 @app.route('/getAllFlip', methods=['GET'])
 def get_flip():
