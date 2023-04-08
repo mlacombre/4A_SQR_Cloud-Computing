@@ -1,5 +1,6 @@
 // Attendre que le document soit chargé
 document.addEventListener("DOMContentLoaded", function(event) {
+  
 
   // Récupérer le bouton "Tweet" et le formulaire
   var btnTweet = document.querySelector("button");
@@ -21,31 +22,25 @@ document.addEventListener("DOMContentLoaded", function(event) {
     event.preventDefault();
 
     // Récupérer les valeurs saisies dans les champs de saisie
-    var username = document.getElementById("username").value;
+    var username = document.getElementById("nomUtilisateur").value;
     var tweet = document.getElementById("texte").value;
+    formTweet.style.display = "none";
+    btnTweet.style.display = "block";
+
+    const xhr = new XMLHttpRequest();
+    xhr.open('POST', 'http://localhost:5000/flip/' + username +'/' + tweet);
+    xhr.send();
+ 
+  });
+
 
     // Faire quelque chose avec les valeurs récupérées
     // (par exemple, les envoyer à un serveur)
 
     // Cacher le formulaire et réafficher le bouton "Tweet"
-    formTweet.style.display = "none";
-    btnTweet.style.display = "block";
+    
 
   });
 
-  const xhr = new XMLHttpRequest();
-  xhr.open('GET', 'https://exemple.com/api/tweets');
-
-  xhr.onload = function() {
-    if (xhr.status === 200) {
-      const data = JSON.parse(xhr.responseText);
-      // faire quelque chose avec les données
-    } else {
-      console.log('Erreur de requête.');
-    }
-  };
-
-  xhr.send();
   
-  });
   
