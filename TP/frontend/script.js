@@ -1,6 +1,13 @@
 // Attendre que le document soit chargé
 document.addEventListener("DOMContentLoaded", function(event) {
+  const optionsPOST = {
+    method: 'POST'
+  };
   
+
+  const optionsGET = {
+    method: 'GET'
+  };
 
   // Récupérer le bouton "Tweet" et le formulaire
   var btnTweet = document.querySelector("button");
@@ -27,10 +34,10 @@ document.addEventListener("DOMContentLoaded", function(event) {
     formTweet.style.display = "none";
     btnTweet.style.display = "block";
 
-    const xhr = new XMLHttpRequest();
-    xhr.open('POST', 'http://localhost:5050/flip/' + username +'/' + tweet);
-    xhr.send();
- 
+    fetch('http://localhost:5000/flip/' + username +'/' + tweet,optionsPOST)
+      .then(response => response.json())
+      .then(data => {
+        console.log(data);
   });
 
 
@@ -42,5 +49,5 @@ document.addEventListener("DOMContentLoaded", function(event) {
 
   });
 
-  
+});
   
