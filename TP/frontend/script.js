@@ -28,7 +28,7 @@ document.addEventListener("DOMContentLoaded", function(event) {
     btnTweet.style.display = "block";
 
     const xhr = new XMLHttpRequest();
-    xhr.open('POST', 'http://localhost:5000/flip/' + username +'/' + tweet);
+    xhr.open('POST', 'http://localhost:5050/flip/' + username +'/' + tweet);
     xhr.send();
  
   });
