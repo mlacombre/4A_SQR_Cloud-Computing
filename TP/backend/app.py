@@ -3,7 +3,7 @@ import json
 import re
 from datetime import datetime
 import redis
-from flask import Flask, request
+from flask import Flask, request, jsonify
 from flask_cors import CORS
 
 app = Flask(__name__)
@@ -41,7 +41,7 @@ def get_flip():
         for key in rUsername.scan_iter("*"):
             flip = json.loads(rUsername.get(key))
             flips.append(flip)
-            response = jsonyfy(flips).headers.add('Access-Control-Allow-Origin', '*')
+            response = jsonify(flips).headers.add('Access-Control-Allow-Origin', '*')
     return flips #ca marche
 
 @app.route('/getFlipByUser/<author>', methods=['GET'])
