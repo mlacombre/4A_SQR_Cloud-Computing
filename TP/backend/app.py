@@ -12,13 +12,6 @@ CORS(app)
 rTimestamps = redis.Redis(host='localhost', port=6379, db=0, decode_responses=True)
 rUsername = redis.Redis(host='localhost', port=6379, db=1,decode_responses=True)
 
-@app.after_request
-def add_cors_headers(response):
-    # Ajoute les en-têtes CORS à la réponse
-    response.headers['Access-Control-Allow-Origin'] = '*'
-    response.headers['Access-Control-Allow-Headers'] = 'Content-Type, Authorization'
-    response.headers['Access-Control-Allow-Methods'] = 'GET, POST, PUT, DELETE, OPTIONS'
-    return response
 
 @app.route('/flip/<author>/<flip>', methods=['POST'])
 def flip_by_time(author,flip):
@@ -46,6 +39,7 @@ def get_flip():
         for key in rUsername.scan_iter("*"):
             flip = json.loads(rUsername.get(key))
             flips.append(flip)
+            response = jsonyfy(flips).headers.add('Access-Control-Allow-Origin', '*')
     return flips #ca marche
 
 @app.route('/getFlipByUser/<author>', methods=['GET'])
