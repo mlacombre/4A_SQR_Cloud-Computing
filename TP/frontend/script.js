@@ -1,12 +1,14 @@
 // Attendre que le document soit chargé
 document.addEventListener("DOMContentLoaded", function(event) {
   const optionsPOST = {
-    method: 'POST'
+    method: 'POST',
+    mode: 'cors',
   };
   
 
   const optionsGET = {
-    method: 'GET'
+    method: 'GET',
+    mode: 'cors',
   };
 
   // Récupérer le bouton "Tweet" et le formulaire
@@ -34,18 +36,20 @@ document.addEventListener("DOMContentLoaded", function(event) {
     formTweet.style.display = "none";
     btnTweet.style.display = "block";
 
-    fetch(`http://localhost:5000/flip/${username}/${tweet}`,optionsPOST)
-      .then(response => response.json())
-      .then(data => {
-        console.log(data);
-      });
+    let xhr = new XMLHttpRequest();
 
-
-    // Faire quelque chose avec les valeurs récupérées
-    // (par exemple, les envoyer à un serveur)
-
-    // Cacher le formulaire et réafficher le bouton "Tweet"
+    xhr.open('POST', `http://localhost:5000/flip/${username}/${tweet}` , true);
+    xhr.onload = function() {
+      if (xhr.status === 200) {
+        let donnees = JSON.parse(xhr.responseText);
+        console.log(donnees);
+      }
+    };
+    xhr.onerror = function() {
+      console.log("Une erreur est survenue lors de la requête");
+    };
     
+    xhr.send();
 
   });
 
