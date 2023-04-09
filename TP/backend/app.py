@@ -4,13 +4,25 @@ import re
 from datetime import datetime
 import redis
 from flask import Flask, request, jsonify
-from flask_cors import CORS
+from flask_cors import CORS, cross_origin
 
 app = Flask(__name__)
 CORS(app)
-
+cors = CORS(app, resource={
+    r"/*":{
+        "origins":"*"
+    }
+})  
+app.config['CORS_HEADERS'] = 'Content-Type'
 rTimestamps = redis.Redis(host='localhost', port=6379, db=0, decode_responses=True)
 rUsername = redis.Redis(host='localhost', port=6379, db=1,decode_responses=True)
+
+@app.after_request
+def add_cors_headers(response):
+    response.headers['Access-Control-Allow-Origin'] = '*'
+    response.headers['Access-Control-Allow-Headers'] = 'Content-Type,Authorization'
+    response.headers['Access-Control-Allow-Methods'] = 'GET,PUT,POST,DELETE'
+    return response 
 
 
 @app.route('/flip/<author>/<flip>', methods=['POST'])
@@ -30,7 +42,7 @@ def flip_by_time(author,flip):
             for sujet in sujets:
                 rTimestamps.lpush("h-"+ sujet, timestamp)
     response = jsonify({"message": "Flip ajouté avec succès"})
-    response.headers.add("Access-Control-Allow-Origin", "*")
+    response.headers.add("Access-Control-Allow-Origin", "http://127.0.0.1:5000")
     return response
 
 @app.route('/getAllFlip', methods=['GET'])

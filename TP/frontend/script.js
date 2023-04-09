@@ -34,11 +34,11 @@ document.addEventListener("DOMContentLoaded", function(event) {
     formTweet.style.display = "none";
     btnTweet.style.display = "block";
 
-    fetch('http://localhost:5000/flip/' + username +'/' + tweet,optionsPOST)
+    fetch(`http://localhost:5000/flip/${username}/${tweet}`,optionsPOST)
       .then(response => response.json())
       .then(data => {
         console.log(data);
-  });
+      });
 
 
     // Faire quelque chose avec les valeurs récupérées
