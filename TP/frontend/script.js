@@ -2,59 +2,63 @@
 document.addEventListener("DOMContentLoaded", function(event) {
   
 
+
+
+      
+   
   let xhr = new XMLHttpRequest();
     
-    xhr.open('GET', `http://127.0.0.1:5000/getAllFlip`, true);
-    xhr.onload = function() {
-      if (xhr.status === 200) {
-        let donnees = JSON.parse(xhr.responseText);
-          for (let i = 0; i < donnees.length; i++) {
-            let flip = donnees[i].flip;
-            let author = donnees[i].author;
-            let flipDiv = document.createElement("div");
-            flipDiv.classList.add("flip");
-            let flipPseudo = document.createElement("p");
-            flipPseudo.classList.add("flip-pseudo");
-            flipPseudo.textContent = "auteur : " + author;
-            let flipText = document.createElement("p");
-            flipText.classList.add("flip-text");
-            flipText.textContent = flip;
-            flipDiv.appendChild(flipPseudo);
-            flipDiv.appendChild(flipText);
-            document.getElementById("flip-container").appendChild(flipDiv);
-        }
+  xhr.open('GET', `http://127.0.0.1:5000/getAllFlip`, true);
+  xhr.onload = function() {
+    if (xhr.status === 200) {
+      let donnees = JSON.parse(xhr.responseText);
+        for (let i = 0; i < donnees.length; i++) {
+          let flip = donnees[i].flip;
+          let author = donnees[i].author;
+          let flipDiv = document.createElement("div");
+          flipDiv.classList.add("flip");
+          let flipPseudo = document.createElement("p");
+          flipPseudo.classList.add("flip-pseudo");
+          flipPseudo.textContent = "auteur : " + author;
+          let flipText = document.createElement("p");
+          flipText.classList.add("flip-text");
+          flipText.textContent = flip;
+          flipDiv.appendChild(flipPseudo);
+          flipDiv.appendChild(flipText);
+          document.getElementById("flip-container").appendChild(flipDiv);
       }
-    };
-    xhr.onerror = function() {
-      console.log("Une erreur est survenue lors de la requête");
-    };
-    
-    xhr.send();  
+    }
+  };
+  xhr.onerror = function() {
+    console.log("Une erreur est survenue lors de la requête");
+  };
+  
+  xhr.send();  
 
 
-    let xhr2 = new XMLHttpRequest();
+  let xhr2 = new XMLHttpRequest();
     
-    xhr2.open('GET', `http://127.0.0.1:5000/getAllSubject`, true);
-    xhr2.onload = function() {
-      if (xhr2.status === 200) {
-        let donneees = JSON.parse(xhr2.responseText);
-        for (let i = 0; i < donneees.length; i++) {
-          let subject = donneees[i];
-          let subjectDiv = document.createElement("div");
-          subjectDiv.classList.add("subject");
-          let subjectText = document.createElement("button");
-          subjectText.classList.add("subject-text");
-          subjectText.textContent = subject;
-          subjectDiv.appendChild(subjectText);
-          document.getElementById("subject-container").appendChild(subjectDiv);
-        }
+  xhr2.open('GET', `http://127.0.0.1:5000/getAllSubject`, true);
+  xhr2.onload = function() {
+    if (xhr2.status === 200) {
+      let donneees = JSON.parse(xhr2.responseText);
+      for (let i = 0; i < donneees.length; i++) {
+        let subject = donneees[i];
+        let subjectDiv = document.createElement("div");
+        subjectDiv.classList.add("subject");
+        let subjectText = document.createElement("button");
+        subjectText.classList.add("subject-text");
+        subjectText.textContent = subject;
+        subjectDiv.appendChild(subjectText);
+        document.getElementById("subject-container").appendChild(subjectDiv);
       }
-    };
-    xhr2.onerror = function() {
-      console.log("Une erreur est survenue lors de la requête");
-    };
+    }
+  };
+  xhr2.onerror = function() {
+    console.log("Une erreur est survenue lors de la requête");
+  };
 
-    xhr2.send();
+  xhr2.send();
 
 
   // Récupérer le bouton "Tweet" et le formulaire
@@ -131,4 +135,3 @@ document.addEventListener("DOMContentLoaded", function(event) {
   });
 
 });
-  
