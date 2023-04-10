@@ -1,7 +1,7 @@
 
 # Flipper
 
-Ce répertoire github, contient un projet scolaire qui vise à créer une copie de twitter afin de s'entrainer à la création d'API. 
+Ce répertoire github, contient un projet scolaire qui vise à créer une copie de twitter simplifiée : "flipper" afin de s'entrainer à la création d'API. 
 
 Ce répertoire est composé de deux sous répertoires.
 
