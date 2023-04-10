@@ -38,7 +38,7 @@ document.addEventListener("DOMContentLoaded", function(event) {
 
     let xhr = new XMLHttpRequest();
 
-    xhr.open('POST', `http://localhost:5000/flip/${username}/${tweet}` , true);
+    xhr.open('POST', `http://localhost:5000/flip/${username}/${tweet}`, true);
     xhr.onload = function() {
       if (xhr.status === 200) {
         let donnees = JSON.parse(xhr.responseText);
