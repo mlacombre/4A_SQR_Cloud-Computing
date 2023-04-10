@@ -1,7 +1,7 @@
 
 # API FLIPPER
 
-Dans ce répertoire, vous trouverez tous les dossiers correspondants au backend de FLIPPER. Vous trouverez : un fichier pour dockeriser ainsi que l'API
+Dans ce répertoire, vous trouverez tous les dossiers correspondant au backend de FLIPPER. Vous trouverez : un fichier pour dockeriser ainsi que l'API
 
 
 ## Techno API
@@ -13,7 +13,7 @@ Dans ce répertoire, vous trouverez tous les dossiers correspondants au backend 
 
 ## REDIS
 
-L'ensemble des informations sont stocké dans des bases redis. Pour installer redis avant installation, il faut utiliser : 
+L'ensemble des informations est stocké dans des bases redis. Pour installer redis avant installation, il faut utiliser : 
 
 ```bash
 docker run --name myredis -p 6379:6379 redis
@@ -26,13 +26,13 @@ key=timestamp, value=’{“author”: “username”, “flip”: ”message”
 `````
 La clé est ici le timestamp d'un flip.
 
-Cependant dans le cas d'un retweet, il sera possible de modifier la value pour ajouter une clé reflipper dans le dictionnaire ce qui ressemblera à: 
+Cependant dans le cas d'un retweet, il sera possible de modifier la valeur pour ajouter une clé reflippée dans le dictionnaire ce qui ressemblera à: 
 
 ````bash 
 key=timestamp, value=’{“author”: “username”, “flip”: ”message”, "reflipper": "reflipper}’
 `````
 
-La seconde base, servira à stocker à la fois les auteurs et les timestamps de leur tweets ainsi que les sujets et les timestamps des moments où ils aapparaissent. On stockera les informations comme suit : 
+La seconde base, servira à stocker à la fois les auteurs et les timestamps de leur tweets ainsi que les sujets et les timestamps des moments où ils apparaissent. On stockera les informations comme cela : 
 ````bash 
 key= "u-"+author, value=[timestamp_1, timestamp_2, timestamp_3]
 `````
@@ -40,7 +40,7 @@ key= "u-"+author, value=[timestamp_1, timestamp_2, timestamp_3]
 key="h-"+hashtag, value=[timestamp_1, timestamp_2, timestamp_3]
 `````
 
-Les préfixes "u-" et h-" assurent qu'aucun sujets ne peut correspondrent à un auteur
+Les préfixes "u-" et h-" assurent qu'aucun sujet ne peut correspondre à un auteur
 
 
 ## ROUTES
@@ -54,9 +54,9 @@ cette API dispose de 6 routes :
   POST /flip/<author>/<flip>
 ```
 
-cette route permet de stocker un flip dans deux bases redis comme préciser ci-desssus.
+Cette route permet de stocker un flip dans deux bases redis comme précisé ci-desssus.
 
-Elle permet aussi de stocker lmes sujets grâce à l'expression régulière : 
+Elle permet aussi de stocker les sujets grâce à l'expression régulière : 
 
 `r"(?<!\w)#[A-Za-z0-9]+(?![A-Za-z0-9]*#)"`
 
@@ -76,14 +76,14 @@ Cette route permet de récupérer l'ensemble des flips qui ont été écrits.
   GET /getFlipByUser/<User>
 ```
 
-Cette route permet de récupérer l'ensemble des flips qu'un utilisateur à écrits ou reflippé.
+Cette route permet de récupérer l'ensemble des flips qu'un utilisateur a écrit ou reflippé.
 
 #### Récupération de l'ensemble des sujets
 
 ```bash
   GET /getAllSubject
 ```
-Cette route récupère l'ensemble des sujets stocké dans la base reddis. 
+Cette route récupère l'ensemble des sujets stocké dans la base redis. 
 
 
 #### Récupération de l'ensemble des flips ou apparait un sujet
@@ -92,7 +92,7 @@ Cette route récupère l'ensemble des sujets stocké dans la base reddis.
   GET /getFlipByHashtag/<sujet>
 ````
 
-celle ci permet de récupérer l'ensemble des flips ou apparait un sujet.
+Celle ci permet de récupérer l'ensemble des flips où apparait un sujet.
 
 #### Reflip
 
@@ -100,5 +100,5 @@ celle ci permet de récupérer l'ensemble des flips ou apparait un sujet.
   POST /Reflip/<flipper>/<reflipper>/<reflipped>
 ````
 
-Cette route permet de stocker en base de donnée un nouveau tweet équivalent à celui tweeté cependant rajoute une donnée reflipper dans le tweet permettant de savoir que le tweet est un retweet et qui la retweet
-##### Attention ⚠️, il est possible de reflipper plusieurs fois un même flip avec cette méthode. Aucun mécanisme n'a été rajouté pour l'empécher.
+Cette route permet de stocker en base de données un nouveau tweet équivalent à celui tweeté. Cependant, elle rajoute une donnée "reflippée" dans ce tweet permettant de savoir que le tweet est un retweet et qui en est l'auteur.
+##### Attention ⚠️, il est possible de reflipper plusieurs fois un même flip avec cette méthode. Aucun mécanisme n'a été rajouté pour l'empêcher.
