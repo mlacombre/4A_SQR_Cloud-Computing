@@ -66,3 +66,15 @@ form button {
     font-weight: bold;
     border: none;
 }
+.flip {
+    border: 1px solid #f21dd6;
+    padding: 10px;
+    border-radius: 5px;
+    margin: 10px;
+
+  }
+  
+  .flip p {
+    margin: 5px;
+    font-size: 1.2rem;
+  }

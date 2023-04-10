@@ -1,31 +1,27 @@
 import sys
 import json
 import re
+import urllib.parse
 from datetime import datetime
 import redis
 from flask import Flask, request, jsonify
 from flask_cors import CORS, cross_origin
 
 app = Flask(__name__)
-CORS(app)
-cors = CORS(app, resources={r"/*": {"origins": ['*']}})
+cors = CORS(app)
+
 
 rTimestamps = redis.Redis(host='localhost', port=6379, db=0, decode_responses=True)
 rUsername = redis.Redis(host='localhost', port=6379, db=1,decode_responses=True)
 
 
-@app.after_request
-def add_cors_headers(response):
-    response.headers.add('Access-Control-Allow-Origin', '*')
-    response.headers.add('Access-Control-Allow-Methods', 'GET,PUT,POST,DELETE,OPTIONS')
-    return response
-
 @app.route('/flip/<author>/<flip>', methods=['POST'])
-@cross_origin(origin='*')
 def flip_by_time(author,flip):
     """enregiste les flips par auteurs et timestamp"""
     if request.method == 'POST':
         timestamp = str(datetime.now())
+        author = urllib.parse.unquote(author)
+        flip = urllib.parse.unquote(flip)
         content = {
             "flip" : flip,
             "author" : author,
@@ -48,8 +44,7 @@ def get_flip():
         for key in rUsername.scan_iter("*"):
             flip = json.loads(rUsername.get(key))
             flips.append(flip)
-            response = jsonify(flips).headers.add('Access-Control-Allow-Origin', '*')
-    return flips #ca marche
+    return json.dumps(flips) #ca marche
 
 @app.route('/getFlipByUser/<author>', methods=['GET'])
 def get_flip_by_user(author):
