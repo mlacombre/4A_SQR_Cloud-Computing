@@ -20,7 +20,7 @@ jobs:
     - name: Setup Node.js environment
       uses: actions/setup-node@v3.6.0
     - name: build API
-      run: python3 TP/app.py check_syntax
+      run: python3 TP/backend/app.py check_syntax
       
     
 
