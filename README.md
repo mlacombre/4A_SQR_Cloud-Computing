@@ -3,7 +3,7 @@
 
 Ce répertoire github, contient un projet scolaire qui vise à créer une copie de twitter afin de s'entrainer à la création d'API. 
 
-Ce répertoire est composé de deux sous répertoire.
+Ce répertoire est composé de deux sous répertoires.
 
 
 - Backend
@@ -14,17 +14,18 @@ Ce répertoire est composé de deux sous répertoire.
 le backend de ce projet est composé d'un fichier python qui forme l'API grâce à Flask. 
 [![forthebadge made-with-python](http://ForTheBadge.com/images/badges/made-with-python.svg)](https://www.python.org/)
 
-Cette API permet plusieurs opération détaillé dans le README du répertoire. 
+Cette API permet plusieurs opérations qui seront détaillées dans le README du répertoire. 
 
 ## Frontend
 
-Le Frontend à pour objectif de fournir un moyen de questionner l'API afin de reproduire un fonctionnemnt simplifier de twitter. Cependant il est encore en contruction et n'est pas fini à cause d'un problème avec les CORS.
-
+Le Frontend a pour objectif de fournir un moyen de questionner l'API afin de reproduire un fonctionnemnt simplifié de twitter.
 
 
 
 
 ## Authors
+
+Groupe ERASMUS Norvège
 
 - [@gabinde](https://github.com/gabinde) gabin Deroues
 - [@mlacombre](https://github.com/mlacombre) morgane Lacombre
@@ -47,7 +48,7 @@ Pour déployer le server flask
   docker run -d -p 5000:5000 flask-image:v1
 ```
 
-Pour déployer la base de donnée Redis
+Pour déployer la base de données Redis
 
 ```bash
     docker run --name myredis -p 6379:6379 redis
